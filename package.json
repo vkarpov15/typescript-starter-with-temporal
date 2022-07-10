@@ -16,8 +16,8 @@
     "test": "env NODE_OPTIONS=--experimental-vm-modules jest",
     "test:watch": "env NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:cov": "env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:debug": "env NODE_OPTIONS=--experimental-vm-modules node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "env NODE_OPTIONS=--experimental-vm-modules jest --config ./test/jest-e2e.json",
     "worker": "ts-node src/worker.ts"
   },
   "dependencies": {

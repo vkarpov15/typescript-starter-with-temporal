@@ -4,8 +4,7 @@ import { getValueQuery, incrementSignal } from '../workflows';
 
 @Injectable()
 export class CounterService {
-  constructor(@Inject('COUNTER_WORKFLOW') private handle: WorkflowHandle) {
-  }
+  constructor(@Inject('COUNTER_WORKFLOW') private handle: WorkflowHandle) {}
 
   async getValue(): Promise<number> {
     return this.handle.query(getValueQuery);

@@ -6,7 +6,7 @@ import { CounterService } from './counter.service';
 import { counterWorkflow } from '../workflows';
 import { temporalProviders } from './counter-workflow.providers';
 
-const taskQueue = 'test-test';
+const taskQueue = 'unit-test';
 
 describe('CounterController', () => {
   let app: TestingModule;
@@ -21,7 +21,7 @@ describe('CounterController', () => {
     worker = await Worker.create({
       connection: env.nativeConnection,
       workflowsPath: require.resolve('../workflows'),
-      taskQueue
+      taskQueue,
     });
     runPromise = worker.run();
 
@@ -29,14 +29,13 @@ describe('CounterController', () => {
     const handle = await client.start(counterWorkflow, {
       args: [0],
       taskQueue,
-      workflowId: 'counter'
+      workflowId: 'counter',
     });
 
-    app = await Test
-      .createTestingModule({
-        controllers: [CounterController],
-        providers: [...temporalProviders, CounterService],
-      })
+    app = await Test.createTestingModule({
+      controllers: [CounterController],
+      providers: [...temporalProviders, CounterService],
+    })
       .overrideProvider('COUNTER_WORKFLOW')
       .useValue(handle)
       .compile();
@@ -47,7 +46,7 @@ describe('CounterController', () => {
     await runPromise;
 
     await env.teardown();
-  })
+  });
 
   it('should return 0 initially', async () => {
     const counterController = app.get<CounterController>(CounterController);

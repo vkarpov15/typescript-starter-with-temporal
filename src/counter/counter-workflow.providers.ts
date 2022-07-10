@@ -1,6 +1,6 @@
 import {
   WorkflowClient,
-  WorkflowExecutionAlreadyStartedError
+  WorkflowExecutionAlreadyStartedError,
 } from '@temporalio/client';
 import { counterWorkflow } from '../workflows';
 
@@ -17,7 +17,7 @@ export const temporalProviders = [
         handle = await client.start(counterWorkflow, {
           args: [0],
           taskQueue: 'nest-test',
-          workflowId: 'counter'
+          workflowId: 'counter',
         });
       } catch (err) {
         if (err instanceof WorkflowExecutionAlreadyStartedError) {
@@ -29,6 +29,6 @@ export const temporalProviders = [
 
       console.log('Started counter ', handle);
       return handle;
-    }
-  }
-]
+    },
+  },
+];
