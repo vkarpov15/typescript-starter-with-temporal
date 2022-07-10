@@ -3,8 +3,10 @@ import { Runtime, DefaultLogger, Worker } from '@temporalio/worker';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CounterController } from './counter.controller';
 import { CounterService } from './counter.service';
-import { counterWorkflow, getValueQuery } from '../workflows';
+import { counterWorkflow } from '../workflows';
 import { temporalProviders } from './counter-workflow.providers';
+
+const taskQueue = 'test-test';
 
 describe('CounterController', () => {
   let app: TestingModule;
@@ -19,14 +21,14 @@ describe('CounterController', () => {
     worker = await Worker.create({
       connection: env.nativeConnection,
       workflowsPath: require.resolve('../workflows'),
-      taskQueue: 'ecommerce'
+      taskQueue
     });
     runPromise = worker.run();
 
     const client = env.workflowClient;
     const handle = await client.start(counterWorkflow, {
       args: [0],
-      taskQueue: 'nest-test',
+      taskQueue,
       workflowId: 'counter'
     });
 
@@ -44,14 +46,20 @@ describe('CounterController', () => {
     worker.shutdown();
     await runPromise;
 
-    await env.nativeConnection.close();
     await env.teardown();
   })
 
   it('should return 0 initially', async () => {
     const counterController = app.get<CounterController>(CounterController);
     const res = await counterController.getCounter();
-    console.log('Got counter?')
     expect(res).toBe(0);
+  });
+
+  it('should allow incrementing', async () => {
+    const counterController = app.get<CounterController>(CounterController);
+    await counterController.incrementCounter({ value: 2 });
+
+    const res = await counterController.getCounter();
+    expect(res).toBe(2);
   });
 });

@@ -7,7 +7,6 @@ export class CounterController {
 
   @Get()
   async getCounter(): Promise<number> {
-    console.log('getCounter');
     return this.counterService.getValue();
   }
 

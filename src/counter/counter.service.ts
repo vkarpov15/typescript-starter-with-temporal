@@ -8,7 +8,6 @@ export class CounterService {
   }
 
   async getValue(): Promise<number> {
-    console.log('Get value');
     return this.handle.query(getValueQuery);
   }
 
