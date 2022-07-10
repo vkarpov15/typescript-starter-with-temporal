@@ -1,16 +1,17 @@
 import { Body, Controller, Get, Put } from '@nestjs/common';
 import { CounterService } from './counter.service';
 
-@Controller()
-export class AppController {
+@Controller('counter')
+export class CounterController {
   constructor(private readonly counterService: CounterService) {}
 
-  @Get('counter')
+  @Get()
   async getCounter(): Promise<number> {
+    console.log('getCounter');
     return this.counterService.getValue();
   }
 
-  @Put('counter')
+  @Put()
   async incrementCounter(@Body() body: { value: number }): Promise<boolean> {
     await this.counterService.increment(body.value);
 

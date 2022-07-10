@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { WorkflowHandle } from '@temporalio/client';
-import { getValueQuery, incrementSignal } from './workflows';
+import { getValueQuery, incrementSignal } from '../workflows';
 
 @Injectable()
 export class CounterService {
@@ -8,6 +8,7 @@ export class CounterService {
   }
 
   async getValue(): Promise<number> {
+    console.log('Get value');
     return this.handle.query(getValueQuery);
   }
 
